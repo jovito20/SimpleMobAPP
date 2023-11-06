@@ -9,6 +9,7 @@ String masterusername = "1101204149";
 String masterpassword = "1101204149";
 String masteremail = "default";
 String masternim = "default";
+String masternumber = "-";
 
 //Disclaimer app ini hanya bisa menampung 1 user saja, jika signup dilakukan maka data user sebelumnya akan terhapus, sesuai dengan arahan
 //pada saat uts bahwa hanya 1 user saja yang diperlukan
@@ -143,11 +144,6 @@ class _LoginPageState extends State<LoginPage> {
                 style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(255, 249, 241, 238)),
                 onPressed: _login,
-                // Navigator.push(
-                // context,
-                // MaterialPageRoute(
-                //   builder: (context) => HomePage(),
-                // )),
                 child: const Text(
                   'Login',
                   style: TextStyle(color: Colors.black),
@@ -561,6 +557,32 @@ class _HomePageState extends State<HomePage> {
               SizedBox(
                 height: 50,
               ),
+              Container(
+                color: Color.fromARGB(255, 255, 0, 0),
+                alignment: Alignment.center,
+                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+                child: Text(
+                  masternumber,
+                  style: TextStyle(
+                      fontSize: 48,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                ),
+              ),
+              // SizedBox(
+              //   height: 75,
+              //   width: 75,
+              //   child: Container(
+              //     color: Color.fromARGB(255, 255, 0, 0),
+              //     child: Text(masternumber),
+              //     height: 100,
+              //     width: 50,
+              //   ),
+              // ),
+              // ),
+              SizedBox(
+                height: 75,
+              ),
               SizedBox(
                 height: 30,
                 width: 120,
@@ -605,57 +627,68 @@ class _Kalkulator1101204149State extends State<Kalkulator1101204149> {
     setState(() {
       if (x == '7') {
         outangka = '7';
+        masternumber = outangka;
       } else if (x == '8') {
         outangka = '8';
+        masternumber = outangka;
       } else if (x == '9') {
         outangka = '9';
+        masternumber = outangka;
       } else if (x == '4') {
         outangka = '4';
+        masternumber = outangka;
       } else if (x == '5') {
         outangka = '5';
+        masternumber = outangka;
       } else if (x == '6') {
         outangka = '6';
+        masternumber = outangka;
       } else if (x == '1') {
         outangka = '1';
+        masternumber = outangka;
       } else if (x == '2') {
         outangka = '2';
+        masternumber = outangka;
       } else if (x == '3') {
         outangka = '3';
+        masternumber = outangka;
       } else if (x == '0') {
         outangka = '0';
+        masternumber = outangka;
       } else if (x == 'C') {
         outangka = '0';
+        masternumber = outangka;
       } else if (x == 'X') {
         out = x;
         num1 = double.parse(outangka);
+        masternumber = outangka;
       } else if (x == '-') {
         // out = '0';
         out = x;
         num1 = double.parse(outangka);
+        masternumber = outangka;
       } else if (x == '+') {
-        // out = '0';
         out = x;
         num1 = double.parse(outangka);
       } else if (x == '/') {
-        // out = '0';
         out = x;
         num1 = double.parse(outangka);
       } else if (x == '=') {
-        // out = '0';
         num2 = double.parse(outangka);
         if (out == '+') {
           outangka = (num1 + num2).toString();
+          masternumber = outangka;
         } else if (out == '-') {
           outangka = (num1 - num2).toString();
+          masternumber = outangka;
         } else if (out == 'X') {
           outangka = (num1 * num2).toString();
+          masternumber = outangka;
         } else if (out == '/') {
           outangka = (num1 / num2).toString();
+          masternumber = outangka;
         }
-        //
       }
-      // print(num1.toString());
-      // print(num2.toString());
     });
   }
 
@@ -739,7 +772,11 @@ class _Kalkulator1101204149State extends State<Kalkulator1101204149> {
             child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(255, 249, 241, 238)),
-                onPressed: () => Navigator.pop(context),
+                onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => HomePage(),
+                    )),
                 child:
                     const Text("BACK", style: TextStyle(color: Colors.black))),
           ),
