@@ -569,17 +569,6 @@ class _HomePageState extends State<HomePage> {
                       color: Colors.white),
                 ),
               ),
-              // SizedBox(
-              //   height: 75,
-              //   width: 75,
-              //   child: Container(
-              //     color: Color.fromARGB(255, 255, 0, 0),
-              //     child: Text(masternumber),
-              //     height: 100,
-              //     width: 50,
-              //   ),
-              // ),
-              // ),
               SizedBox(
                 height: 75,
               ),
@@ -600,6 +589,21 @@ class _HomePageState extends State<HomePage> {
               ),
               SizedBox(
                 height: 50,
+              ),
+              SizedBox(
+                height: 30,
+                width: 120,
+                child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                            const Color.fromARGB(255, 249, 241, 238)),
+                    onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MyHomePage(),
+                        )),
+                    child: const Text("SIGN OUT",
+                        style: TextStyle(color: Colors.black))),
               ),
             ],
           ),
