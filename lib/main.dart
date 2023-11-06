@@ -5,6 +5,13 @@ void main() {
   runApp(MyApp());
 }
 
+String masterusername = "1101204149";
+String masterpassword = "1101204149";
+String masteremail = "default";
+String masternim = "default";
+
+//Disclaimer app ini hanya bisa menampung 1 user saja, jika signup dilakukan maka data user sebelumnya akan terhapus, sesuai dengan arahan
+//pada saat uts bahwa hanya 1 user saja yang diperlukan
 //SPLASH SCREEN 1101204149
 class MyApp extends StatelessWidget {
   @override
@@ -38,7 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+      color: const Color.fromARGB(255, 108, 95, 91),
       child: Image.asset("lib/assets/vito.jpg"),
       height: 100,
       width: 50,
@@ -63,9 +70,10 @@ class _LoginPageState extends State<LoginPage> {
   void _login() {
     String testusername = usernameController.text;
     String testpassword = passwordController.text;
-    // String username =
+    String username = masterusername;
+    String password = masterpassword;
     // Simple username and password check
-    if (testusername == '1101204149' && testpassword == '1101204149') {
+    if (testusername == username && testpassword == password) {
       setState(() {
         message = 'Login successful!';
         Navigator.push(
@@ -86,12 +94,17 @@ class _LoginPageState extends State<LoginPage> {
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => SignupForm(),
+          builder: (context) => SignupPage(),
         ));
   }
 
   void _navigateToForgotPassword() {
     // Add navigation logic to your forgot password page
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ForgotPasswordPage(),
+        ));
   }
 
   @override
@@ -175,6 +188,22 @@ class _LoginPageState extends State<LoginPage> {
 }
 
 //SIGNUP
+class SignupPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 108, 95, 91),
+      appBar: AppBar(
+        title: Text("Sign Up Page"),
+        backgroundColor: const Color.fromARGB(255, 237, 125, 49),
+      ),
+      body: Center(
+        child: SignupForm(),
+      ),
+    );
+  }
+}
+
 class SignupForm extends StatefulWidget {
   @override
   _SignupFormState createState() => _SignupFormState();
@@ -186,6 +215,7 @@ class _SignupFormState extends State<SignupForm> {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController nimController = TextEditingController();
   final TextEditingController reasureController = TextEditingController();
+  String pesan = '';
   void _signup() {
     String username = usernameController.text;
     String email = emailController.text;
@@ -195,9 +225,52 @@ class _SignupFormState extends State<SignupForm> {
 
     // You can add your signup logic here, such as creating a new user account.
     // For this example, we'll simply print the user's information to the console.
-    print("Username: $username");
-    print("Email: $email");
-    print("Password: $password");
+
+    if (password == reasure) {
+      masterpassword = password;
+      masterusername = username;
+      masteremail = email;
+      masternim = nim;
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Sign Up"),
+            content: Text("Berhasil"),
+            actions: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => LoginPage(),
+                      ));
+                },
+                child: Text("OK"),
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Sign Up"),
+            content: Text("Password tidak match."),
+            actions: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text("OK"),
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
   @override
@@ -241,9 +314,16 @@ class _SignupFormState extends State<SignupForm> {
             decoration: InputDecoration(labelText: 'Refill Password'),
           ),
         ),
-        ElevatedButton(
-          onPressed: _signup,
-          child: Text('Sign Up'),
+        Text(pesan),
+        SizedBox(
+          height: 30,
+          width: 120,
+          child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color.fromARGB(255, 249, 241, 238)),
+              onPressed: _signup,
+              child:
+                  const Text("SIGN UP", style: TextStyle(color: Colors.black))),
         ),
       ],
     );
@@ -251,36 +331,99 @@ class _SignupFormState extends State<SignupForm> {
 }
 
 //FORGOT PASSWORD
+class ForgotPasswordPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 108, 95, 91),
+      appBar: AppBar(
+        title: Text("Forgot Password"),
+        backgroundColor: const Color.fromARGB(255, 237, 125, 49),
+      ),
+      body: Center(
+        child: ForgotPasswordForm(),
+      ),
+    );
+  }
+}
+
 class ForgotPasswordForm extends StatefulWidget {
   @override
   _ForgotPasswordFormState createState() => _ForgotPasswordFormState();
 }
 
 class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
-  final TextEditingController emailController = TextEditingController();
-
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController reasureController = TextEditingController();
+  String pesan = "HAVE A NICE DAY";
   void _resetPassword() {
-    String email = emailController.text;
+    String username = usernameController.text;
+    String password = passwordController.text;
+    String reasure = reasureController.text;
 
-    // You can add your reset password logic here, such as sending a reset link to the user's email.
-    // For this example, we'll just show a confirmation dialog.
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text("Password Reset"),
-          content: Text("A password reset email has been sent to $email."),
-          actions: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text("OK"),
-            ),
-          ],
+    if (masterusername == username) {
+      if (password == reasure) {
+        masterpassword = password;
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text("Password Reset"),
+              content: Text("Berhasil mereset password dari $username."),
+              actions: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LoginPage(),
+                        ));
+                  },
+                  child: Text("OK"),
+                ),
+              ],
+            );
+          },
         );
-      },
-    );
+      } else {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text("Password Reset"),
+              content: Text("Password tidak match."),
+              actions: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text("OK"),
+                ),
+              ],
+            );
+          },
+        );
+      }
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Password Reset"),
+            content: Text("Username '$username' tidak ditemukan."),
+            actions: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text("OK"),
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
   @override
@@ -290,13 +433,36 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
         Padding(
           padding: EdgeInsets.all(16.0),
           child: TextField(
-            controller: emailController,
-            decoration: InputDecoration(labelText: 'Email'),
+            controller: usernameController,
+            decoration: InputDecoration(labelText: 'Username'),
           ),
         ),
-        ElevatedButton(
-          onPressed: _resetPassword,
-          child: Text('Reset Password'),
+        Padding(
+          padding: EdgeInsets.all(16.0),
+          child: TextField(
+            controller: passwordController,
+            obscureText: true,
+            decoration: InputDecoration(labelText: 'Password'),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.all(16.0),
+          child: TextField(
+            controller: reasureController,
+            obscureText: true,
+            decoration: InputDecoration(labelText: 'Refill Password'),
+          ),
+        ),
+        Text(pesan),
+        SizedBox(
+          height: 30,
+          width: 120,
+          child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color.fromARGB(255, 249, 241, 238)),
+              onPressed: _resetPassword,
+              child:
+                  const Text("Reset", style: TextStyle(color: Colors.black))),
         ),
       ],
     );
@@ -313,11 +479,11 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 155, 41, 255),
+      backgroundColor: const Color.fromARGB(255, 108, 95, 91),
       // drawer: NavBar(),
       appBar: AppBar(
         title: Text('Home Page'),
-        backgroundColor: Color(0xFF3F1651),
+        backgroundColor: const Color.fromARGB(255, 237, 125, 49),
       ),
       body: ListView(
         children: [
@@ -331,7 +497,7 @@ class _HomePageState extends State<HomePage> {
                 height: 240,
               ),
               Text(
-                'Welcome Jonathan Vito',
+                'Welcome $masterusername',
                 style: TextStyle(
                     // fontFamily: 'Pacifico',
                     fontSize: 40.0,
@@ -361,31 +527,10 @@ class _HomePageState extends State<HomePage> {
                 ),
                 child: ListTile(
                   leading: Icon(
-                    Icons.phone,
-                    color: Color(0xFF3F1651),
-                  ),
-                  title: Text(
-                    '+62 813 8733 7718',
-                    style: TextStyle(
-                      color: Color(0xFF3F1651),
-                      // fontFamily: 'Source Sans',
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-              Card(
-                margin: EdgeInsets.symmetric(
-                  vertical: 10.0,
-                  horizontal: 25.0,
-                ),
-                child: ListTile(
-                  leading: Icon(
                     Icons.perm_identity,
                     color: Color(0xFF3F1651),
                   ),
-                  title: Text('1101204149',
+                  title: Text('$masternim',
                       style: TextStyle(
                         fontSize: 18.0,
                         color: Color(0xFF3F1651),
@@ -404,7 +549,7 @@ class _HomePageState extends State<HomePage> {
                     Icons.email,
                     color: Color(0xFF3F1651),
                   ),
-                  title: Text('jovito2006@gmail.com',
+                  title: Text('$masteremail',
                       style: TextStyle(
                         fontSize: 18.0,
                         color: Color(0xFF3F1651),
@@ -416,14 +561,24 @@ class _HomePageState extends State<HomePage> {
               SizedBox(
                 height: 50,
               ),
-              ElevatedButton.icon(
-                  onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Kalkulator1101204149(),
-                      )),
-                  icon: Icon(Icons.navigate_next),
-                  label: Text("Calculator"))
+              SizedBox(
+                height: 30,
+                width: 120,
+                child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                            const Color.fromARGB(255, 249, 241, 238)),
+                    onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Kalkulator1101204149(),
+                        )),
+                    child: const Text("KALKULATOR",
+                        style: TextStyle(color: Colors.black))),
+              ),
+              SizedBox(
+                height: 50,
+              ),
             ],
           ),
         ],
@@ -597,20 +752,6 @@ class _Kalkulator1101204149State extends State<Kalkulator1101204149> {
               textAlign: TextAlign.center,
             ),
           ),
-          // SizedBox(
-          //   height: 30,
-          //   width: 120,
-          //   child: ElevatedButton(
-          //       style: ElevatedButton.styleFrom(
-          //           backgroundColor: const Color.fromARGB(255, 249, 241, 238)),
-          //       onPressed: () => Navigator.push(
-          //           context,
-          //           MaterialPageRoute(
-          //             builder: (context) => Calculator(),
-          //           )),
-          //       child:
-          //           const Text("NEXT", style: TextStyle(color: Colors.black))),
-          // ),
         ]),
       );
     });
